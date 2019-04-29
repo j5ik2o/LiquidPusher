@@ -11,8 +11,7 @@ import akka.{Done, NotUsed}
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
-class WebSocket(val host: String, val wsListener: WebSocketListener) {
-  implicit val system = ActorSystem()
+class WebSocket(val host: String, val wsListener: WebSocketListener)(implicit system: ActorSystem) {
   implicit val materializer = ActorMaterializer()
   import system.dispatcher
 
@@ -50,10 +49,13 @@ class WebSocket(val host: String, val wsListener: WebSocketListener) {
       case Failure(exception) => wsListener.onError(exception)
     }
   }
+
   def send(data: String): Unit = {
     wsInstance.foreach(_ ! TextMessage.Strict(data))
   }
+
   private def setWsInstance(ws: ActorRef): Unit = {
     wsInstance = Option(ws)
   }
+
 }

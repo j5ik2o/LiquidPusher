@@ -1,17 +1,16 @@
 package com.github.BambooTuna.LiquidPusher.client
 
+import akka.actor.ActorSystem
 import com.github.BambooTuna.LiquidPusher.client.LiquidPusherProtocol._
 import com.github.BambooTuna.LiquidPusher.pusher.PusherProtocol._
 import com.github.BambooTuna.LiquidPusher.pusher._
 import com.github.BambooTuna.LiquidPusher.websocket.WebSocket
-
-import pdi.jwt.{JwtAlgorithm, Jwt}
-
+import pdi.jwt.{Jwt, JwtAlgorithm}
 import io.circe._
 import io.circe.syntax._
 import io.circe.generic.auto._
 
-class LiquidPusher(pusherOptions: PusherOptions) extends Pusher(pusherOptions) {
+class LiquidPusher(pusherOptions: PusherOptions)(implicit system: ActorSystem) extends Pusher(pusherOptions) {
   override protected val ws: WebSocket = new WebSocket(pusherOptions.host, setListener(this))
 
   private var authResultListenerOption: Option[ChannelListener] = None

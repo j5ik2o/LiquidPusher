@@ -1,10 +1,12 @@
 package com.github.BambooTuna.LiquidPusher
 
+import akka.actor.ActorSystem
 import com.github.BambooTuna.LiquidPusher.client.LiquidPusher
 import com.github.BambooTuna.LiquidPusher.pusher._
 
 object Main {
   def main(args: Array[String]): Unit = {
+    implicit val actorSystem = ActorSystem("LiquidPusher")
     val pusherOptions = PusherOptions("wss://tap.liquid.com").setAuthorizer(PusherAuthorizer("key", "secret"))
     //val pusherOptions = PusherOptions("wss://tap.liquid.com", Some(PusherAuthorizer("key", "secret")))
     val liquidPusher = new LiquidPusher(pusherOptions)

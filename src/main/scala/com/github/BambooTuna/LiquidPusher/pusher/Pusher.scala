@@ -1,5 +1,6 @@
 package com.github.BambooTuna.LiquidPusher.pusher
 
+import akka.actor.ActorSystem
 import com.github.BambooTuna.LiquidPusher.LogSupport
 import com.github.BambooTuna.LiquidPusher.pusher.PusherProtocol._
 import com.github.BambooTuna.LiquidPusher.websocket.{WebSocket, WebSocketListener}
@@ -7,7 +8,7 @@ import io.circe._
 import io.circe.syntax._
 import io.circe.generic.auto._
 
-class Pusher(pusherOptions: PusherOptions) extends LogSupport {
+class Pusher(pusherOptions: PusherOptions)(implicit system: ActorSystem) extends LogSupport {
   protected var connectionListenerOption: Option[ConnectionListener] = None
   protected var channelListeners: Map[String, ChannelListener] = Map.empty
 
